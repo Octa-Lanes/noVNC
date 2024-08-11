@@ -72,7 +72,7 @@ const UI = {
 		// insecure context
 		if (!window.isSecureContext) {
 			// FIXME: This gets hidden when connecting
-			UI.showStatus(_('Running without HTTPS is not recommended, crashes or other issues are likely.'), 'error');
+			// UI.showStatus(_('Running without HTTPS is not recommended, crashes or other issues are likely.'), 'error');
 		}
 
 		// Try to fetch version number
@@ -136,6 +136,9 @@ const UI = {
 			// Show the connect panel on first load unless autoconnecting
 			UI.openConnectPanel();
 		}
+
+		// Auto connect
+		UI.connect();
 
 		return Promise.resolve(UI.rfb);
 	},
@@ -932,6 +935,11 @@ const UI = {
 		const host = TUNNEL_SERVER;
 		const port = UI.readParams('port');
 		const path = 'websockify';
+
+		if (!port) {
+			UI.showStatus(_('Target info is not correctly provided.'), 'error');
+			return;
+		}
 
 		if (typeof password === 'undefined') {
 			password = WebUtil.getConfigVar('password');
