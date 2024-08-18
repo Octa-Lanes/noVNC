@@ -961,9 +961,8 @@ const UI = {
 		if (host) {
 			url = new URL('https://' + host);
 
-			url.protocol = 'wss:';
-			url.port = 443;
-			url.pathname = '/' + path;
+			url.protocol = 'ws:';
+			url.port = port;
 			url.searchParams.append('port', port);
 		} else {
 			// Current (May 2024) browsers support relative WebSocket
