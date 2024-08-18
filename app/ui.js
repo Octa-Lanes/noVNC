@@ -934,7 +934,7 @@ const UI = {
 
 		const host = TUNNEL_SERVER;
 		const port = UI.readParams('port');
-		const path = 'websockify';
+		const path = '';
 
 		if (!port) {
 			UI.showStatus(_('Target info is not correctly provided.'), 'error');
@@ -961,9 +961,10 @@ const UI = {
 		if (host) {
 			url = new URL('https://' + host);
 
-			url.protocol = UI.getSetting('encrypt') ? 'wss:' : 'ws:';
+			url.protocol = 'wss:'; // UI.getSetting('encrypt') ? 'wss:' : 'ws:';
+			url.port = 443;
 			if (port) {
-				url.port = port;
+				url.searchParams.append('port', port);
 			}
 			url.pathname = '/' + path;
 		} else {
