@@ -961,12 +961,10 @@ const UI = {
 		if (host) {
 			url = new URL('https://' + host);
 
-			url.protocol = 'wss:'; // UI.getSetting('encrypt') ? 'wss:' : 'ws:';
+			url.protocol = 'wss:';
 			url.port = 443;
-			if (port) {
-				url.searchParams.append('port', port);
-			}
 			url.pathname = '/' + path;
+			url.searchParams.append('port', port);
 		} else {
 			// Current (May 2024) browsers support relative WebSocket
 			// URLs natively, but we need to support older browsers for
