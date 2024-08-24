@@ -932,9 +932,7 @@ const UI = {
 			return;
 		}
 
-		const host = TUNNEL_SERVER;
 		const port = UI.readParams('port');
-		const path = '';
 
 		if (!port) {
 			UI.showStatus(_('Target info is not correctly provided.'), 'error');
@@ -956,21 +954,10 @@ const UI = {
 
 		UI.updateVisualState('connecting');
 
-		let url;
-
-		if (host) {
-			url = new URL('https://' + host);
-
-			url.protocol = 'ws:';
-			url.port = port;
-			url.searchParams.append('port', port);
-		} else {
-			// Current (May 2024) browsers support relative WebSocket
-			// URLs natively, but we need to support older browsers for
-			// some time.
-			url = new URL(path, location.href);
-			url.protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-		}
+		let url = new URL(`wss://${TUNNEL_SERVER}`);
+		url.host = TUNNEL_SERVER;
+		url.protocol = 'wss:';
+		url.searchParams.set('port', port);
 
 		try {
 			UI.rfb = new RFB(document.getElementById('noVNC_container'), url.href, {
